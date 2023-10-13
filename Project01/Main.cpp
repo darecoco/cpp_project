@@ -23,7 +23,7 @@ int main() {
     }
 
     Texture fruit;
-    if (!fruit.loadFromFile("./images/temp_fruit.jpg")) {
+    if (!fruit.loadFromFile("./images/apple.png")) {
         return 1;
     }
     Vector2u textureSize = fruit.getSize();
@@ -173,7 +173,6 @@ int main() {
         }
 
         deltaTime += clock.restart().asSeconds();
-
         if (slash) {
             if (deltaTime >= frameTime) {
                 currentFrame = (currentFrame+1);
