@@ -90,7 +90,7 @@ int main() {
     float frameTime = 0.15f;
     float deltaTime = 0.0f;
     int currentFrame = 0;
-    bool isPressed = 0;
+    bool slash = 0;
     bool fruit_distroy[] = { false, false, false, false, false, false, false, false };
 
     while (window.isOpen()) {
@@ -134,41 +134,47 @@ int main() {
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
             !fruit_distroy[0];
             fruitSprite0.setPosition(win_width / 2, -70);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::E)) {
             !fruit_distroy[1];
             fruitSprite1.setPosition(win_width + 70, -70);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Right)) {
             !fruit_distroy[2];
             fruitSprite2.setPosition(win_width + 70, win_height / 2);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::C)) {
             !fruit_distroy[3];
             fruitSprite3.setPosition(win_width + 70, win_height + 70);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
             !fruit_distroy[4];
             fruitSprite4.setPosition(win_width / 2, win_height + 70);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Z)) {
             !fruit_distroy[5];
             fruitSprite5.setPosition(-70, win_height + 70);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Left)) {
             !fruit_distroy[6];
             fruitSprite6.setPosition(-70, win_height / 2);
+            slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q)) {
             !fruit_distroy[7];
             fruitSprite7.setPosition(-70, -70);
+            slash = true;
         }
 
         deltaTime += clock.restart().asSeconds();
-        if (Keyboard::isKeyPressed(Keyboard::Space))
-            isPressed = true;
 
-        if (isPressed) {
+        if (slash) {
             if (deltaTime >= frameTime) {
                 currentFrame = (currentFrame+1);
                 sliceSprite.setTextureRect(sf::IntRect(currentFrame * 256, 0, 256, 256));
@@ -179,7 +185,7 @@ int main() {
             if (currentFrame == 1) {
                 deltaTime = 0;
                 currentFrame = -1;
-                isPressed = false;
+                slash = false;
             }
         }else {
             deltaTime = 0;
