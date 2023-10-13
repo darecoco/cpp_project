@@ -38,6 +38,42 @@ int main() {
     baseSprite.setTextureRect(IntRect(0, 0, 256, 256));
     baseSprite.setPosition(win_width / 2 - 256 / 2, win_height / 2 - 256 / 2);
 
+    Sprite fruitSprite0;
+    fruitSprite0.setTexture(fruit);
+    fruitSprite0.setScale(0.4f, 0.4f);
+    fruitSprite0.setPosition(win_width / 2, -70);
+    fruitSprite0.setOrigin(textureSize.x / 2, textureSize.y / 2);
+
+    Sprite fruitSprite1;
+    fruitSprite1.setTexture(fruit);
+    fruitSprite1.setScale(0.4f, 0.4f);
+    fruitSprite1.setPosition(win_width + 70, -70);
+    fruitSprite1.setOrigin(textureSize.x / 2, textureSize.y / 2);
+
+    Sprite fruitSprite2;
+    fruitSprite2.setTexture(fruit);
+    fruitSprite2.setScale(0.4f, 0.4f);
+    fruitSprite2.setPosition(win_width + 70, win_height / 2);
+    fruitSprite2.setOrigin(textureSize.x / 2, textureSize.y / 2);
+
+    Sprite fruitSprite3;
+    fruitSprite3.setTexture(fruit);
+    fruitSprite3.setScale(0.4f, 0.4f);
+    fruitSprite3.setPosition(win_width + 70, win_height + 70);
+    fruitSprite3.setOrigin(textureSize.x / 2, textureSize.y / 2);
+
+    Sprite fruitSprite4;
+    fruitSprite4.setTexture(fruit);
+    fruitSprite4.setScale(0.4f, 0.4f);
+    fruitSprite4.setPosition(win_width / 2, win_height + 70);
+    fruitSprite4.setOrigin(textureSize.x / 2, textureSize.y / 2);
+
+    Sprite fruitSprite5;
+    fruitSprite5.setTexture(fruit);
+    fruitSprite5.setScale(0.4f, 0.4f);
+    fruitSprite5.setPosition(-70, win_height + 70);
+    fruitSprite5.setOrigin(textureSize.x / 2, textureSize.y / 2);
+
     Sprite fruitSprite6;
     fruitSprite6.setTexture(fruit);
     fruitSprite6.setScale(0.4f, 0.4f);
@@ -63,28 +99,69 @@ int main() {
             if (e.type == Event::Closed)
                 window.close();
         }
-        Vector2f fpos7 = fruitSprite7.getPosition();
-        Vector2f fpos6 = fruitSprite6.getPosition();
+        Vector2f fpos[] = { fruitSprite0.getPosition(), fruitSprite1.getPosition(), fruitSprite2.getPosition(), fruitSprite3.getPosition(), fruitSprite4.getPosition(), fruitSprite5.getPosition(),fruitSprite6.getPosition(), fruitSprite7.getPosition()};
 
         //과일 파괴 안되었으면 각자의 방향으로 계속 나아감.
         //  7  0  1
         //  6     2
         //  5  4  3
-        if (!fruit_distroy[7]) {
-            fruitSprite7.setPosition(fpos7.x + 1 , fpos7.y + 1);
+        if (!fruit_distroy[0]) {
+            fruitSprite0.setPosition(fpos[0].x, fpos[0].y + 2);
+        }
+        if (!fruit_distroy[1]) {
+            fruitSprite1.setPosition(fpos[1].x - 1, fpos[1].y + 1);
+        }
+        if (!fruit_distroy[2]) {
+            fruitSprite2.setPosition(fpos[2].x - 2, fpos[2].y);
+        }
+        if (!fruit_distroy[3]) {
+            fruitSprite3.setPosition(fpos[3].x - 1, fpos[3].y - 1);
+        }
+        if (!fruit_distroy[4]) {
+            fruitSprite4.setPosition(fpos[4].x, fpos[4].y - 2);
+        }
+        if (!fruit_distroy[5]) {
+            fruitSprite5.setPosition(fpos[5].x + 1, fpos[5].y - 1);
         }
         if (!fruit_distroy[6]) {
-            fruitSprite6.setPosition(fpos6.x + 2, fpos6.y);
+            fruitSprite6.setPosition(fpos[6].x + 2, fpos[6].y);
+        }
+        if (!fruit_distroy[7]) {
+            fruitSprite7.setPosition(fpos[7].x + 1, fpos[7].y + 1);
         }
 
         //과일에 맞는 키보드 감지
-        if (Keyboard::isKeyPressed(Keyboard::Q)) {
-            !fruit_distroy[7];
-            fruitSprite7.setPosition(-70, -70);
+        if (Keyboard::isKeyPressed(Keyboard::Up)) {
+            !fruit_distroy[0];
+            fruitSprite0.setPosition(win_width / 2, -70);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::E)) {
+            !fruit_distroy[1];
+            fruitSprite1.setPosition(win_width + 70, -70);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Right)) {
+            !fruit_distroy[2];
+            fruitSprite2.setPosition(win_width + 70, win_height / 2);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::C)) {
+            !fruit_distroy[3];
+            fruitSprite3.setPosition(win_width + 70, win_height + 70);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Down)) {
+            !fruit_distroy[4];
+            fruitSprite4.setPosition(win_width / 2, win_height + 70);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Z)) {
+            !fruit_distroy[5];
+            fruitSprite5.setPosition(-70, win_height + 70);
         }
         if (Keyboard::isKeyPressed(Keyboard::Left)) {
             !fruit_distroy[6];
             fruitSprite6.setPosition(-70, win_height / 2);
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Q)) {
+            !fruit_distroy[7];
+            fruitSprite7.setPosition(-70, -70);
         }
 
         deltaTime += clock.restart().asSeconds();
@@ -110,8 +187,14 @@ int main() {
             window.draw(baseSprite);
         }
 
-        window.draw(fruitSprite7);
+        window.draw(fruitSprite0);
+        window.draw(fruitSprite1);
+        window.draw(fruitSprite2);
+        window.draw(fruitSprite3);
+        window.draw(fruitSprite4);
+        window.draw(fruitSprite5);
         window.draw(fruitSprite6);
+        window.draw(fruitSprite7);
 
         window.display();
     }
