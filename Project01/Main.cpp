@@ -23,7 +23,7 @@ int main() {
     }
 
     Texture fruit;
-    if (!fruit.loadFromFile("./images/apple.png")) {
+    if (!fruit.loadFromFile("./images/melon.png")) {
         return 1;
     }
     Vector2u textureSize = fruit.getSize();
