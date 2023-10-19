@@ -1,6 +1,7 @@
 #include "WindowSetting.h"
 // #include "Object.h"
 #include <iostream>
+#include <random>
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
 
@@ -93,6 +94,13 @@ int main() {
     bool slash = 0;
     bool fruit_distroy[] = { false, false, false, false, false, false, false, false };
 
+    unsigned int score = 0;
+    int move_random;
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> distribution(10, 20);
+
     while (window.isOpen()) {
         Event e;
         while (window.pollEvent(e)) {
@@ -105,29 +113,30 @@ int main() {
         //  7  0  1
         //  6     2
         //  5  4  3
+        move_random = distribution(gen);
         if (!fruit_distroy[0]) {
-            fruitSprite0.setPosition(fpos[0].x, fpos[0].y + 2);
+            fruitSprite0.setPosition(fpos[0].x, fpos[0].y + move_random);
         }
         if (!fruit_distroy[1]) {
-            fruitSprite1.setPosition(fpos[1].x - 1, fpos[1].y + 1);
+            fruitSprite1.setPosition(fpos[1].x - move_random, fpos[1].y + move_random);
         }
         if (!fruit_distroy[2]) {
-            fruitSprite2.setPosition(fpos[2].x - 2, fpos[2].y);
+            fruitSprite2.setPosition(fpos[2].x - move_random, fpos[2].y);
         }
         if (!fruit_distroy[3]) {
-            fruitSprite3.setPosition(fpos[3].x - 1, fpos[3].y - 1);
+            fruitSprite3.setPosition(fpos[3].x - move_random, fpos[3].y - move_random);
         }
         if (!fruit_distroy[4]) {
-            fruitSprite4.setPosition(fpos[4].x, fpos[4].y - 2);
+            fruitSprite4.setPosition(fpos[4].x, fpos[4].y - move_random);
         }
         if (!fruit_distroy[5]) {
-            fruitSprite5.setPosition(fpos[5].x + 1, fpos[5].y - 1);
+            fruitSprite5.setPosition(fpos[5].x + move_random, fpos[5].y - move_random);
         }
         if (!fruit_distroy[6]) {
-            fruitSprite6.setPosition(fpos[6].x + 2, fpos[6].y);
+            fruitSprite6.setPosition(fpos[6].x + move_random, fpos[6].y);
         }
         if (!fruit_distroy[7]) {
-            fruitSprite7.setPosition(fpos[7].x + 1, fpos[7].y + 1);
+            fruitSprite7.setPosition(fpos[7].x + move_random, fpos[7].y + move_random);
         }
 
         //과일에 맞는 키보드 감지
