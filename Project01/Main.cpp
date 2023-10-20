@@ -149,42 +149,42 @@ int main() {
 
         //과일에 맞는 키보드 감지
         show_random = show_ran(show);
-        if (Keyboard::isKeyPressed(Keyboard::Up)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad8)) {
             !fruit_distroy[0];
             fruitSprite0.setPosition(win_width / 2, -show_random);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::E)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad9)) {
             !fruit_distroy[1];
             fruitSprite1.setPosition(win_width + show_random, -show_random);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Right)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad6)) {
             !fruit_distroy[2];
             fruitSprite2.setPosition(win_width + show_random, win_height / 2);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::C)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad3)) {
             !fruit_distroy[3];
             fruitSprite3.setPosition(win_width + show_random, win_height + show_random);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Down)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad2)) {
             !fruit_distroy[4];
             fruitSprite4.setPosition(win_width / 2, win_height + show_random);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Z)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad1)) {
             !fruit_distroy[5];
             fruitSprite5.setPosition(-show_random, win_height + show_random);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Left)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad4)) {
             !fruit_distroy[6];
             fruitSprite6.setPosition(-show_random, win_height / 2);
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Q)) {
+        if (Keyboard::isKeyPressed(Keyboard::Numpad7)) {
             !fruit_distroy[7];
             fruitSprite7.setPosition(-show_random, -show_random);
             slash = true;
