@@ -8,6 +8,22 @@
 using namespace std;
 using namespace sf;
 
+//TODO: 클래스화 시키기
+
+class Fruit {
+public:
+    Fruit(Sprite fruit, int speed, Texture texture, int point_x, int point_y) : fruit_(fruit), speed_(speed), texture_(texture), point_x_(point_x), point_y_(point_y)
+    {
+
+    }
+private:
+    Sprite fruit_;
+    int speed_;
+    Texture texture_;
+    int point_x_;
+    int point_y_;
+};
+
 int main() {
     RenderWindow window(VideoMode(win_width, win_height), "A big challenge for programmers is naming.");
 
