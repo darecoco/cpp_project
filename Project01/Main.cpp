@@ -16,8 +16,6 @@ public:
         fruit_.setScale(0.2f, 0.2f);
         fruit_.setPosition(point_x_, point_y_);
         fruit_.setOrigin(texture_.getSize().x / 2, texture_.getSize().y / 2);
-
-        cout << point_x_ << ", " << point_y_ << endl;
     }
 
     auto getSprite() {
@@ -88,6 +86,8 @@ int main() {
     int currentFrame = 0;
     bool slash = 0;
     bool fruit_distroy[] = { false, false, false, false, false, false, false, false };
+    // TODO : 점수 만들기 (최고기록은 프로그램 꺼져도 유지, 화면상 안나온 과일 칼질하면 그대로 게임 끝. 물론 과일이 화면을 넘어가도 게임 끝. 그대로 점수 보여주는 결과화면 띄우기)
+    // 쥔공(중심)을 지나치기 전이면 5점, 지나친 후에 칼질하면 1점
 
     random_device mr; //move random
     mt19937 move(mr());
