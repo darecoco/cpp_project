@@ -75,7 +75,7 @@ int main() {
     Fruit fruit1 = Fruit(fruit, win_width + 90, -90);
     Fruit fruit2 = Fruit(fruit, win_width + 110, win_height / 2);
     Fruit fruit3 = Fruit(fruit, win_width + 130, win_height + 130);
-    Fruit fruit4 = Fruit(fruit, win_width + 130, win_height + 130);
+    Fruit fruit4 = Fruit(fruit, win_width / 2, win_height + 70);
     Fruit fruit5 = Fruit(fruit, -170, win_height + 170);
     Fruit fruit6 = Fruit(fruit, -190, win_height / 2);
     Fruit fruit7 = Fruit(fruit, -210, -210);
@@ -109,80 +109,72 @@ int main() {
         //  6     2
         //  5  4  3
         move_random = move_ran(move);
-        if (!fruit_distroy[0]) {
-            fruit0.setPoint(fpos[0].x, fpos[0].y + move_random);
-        }
-        if (!fruit_distroy[1]) {
-            move_random = move_ran(move);
-            fruit1.setPoint(fpos[1].x - move_random, fpos[1].y + move_random);
-        }
-        if (!fruit_distroy[2]) {
-            fruit2.setPoint(fpos[2].x - move_random, fpos[2].y);
-        }
-        if (!fruit_distroy[3]) {
-            move_random = move_ran(move);
-            fruit3.setPoint(fpos[3].x - move_random, fpos[3].y - move_random);
-        }
-        if (!fruit_distroy[4]) {
-            fruit4.setPoint(fpos[4].x, fpos[4].y - move_random);
-        }
-        if (!fruit_distroy[5]) {
-            move_random = move_ran(move);
-            fruit5.setPoint(fpos[5].x + move_random, fpos[5].y - move_random);
-        }
-        if (!fruit_distroy[6]) {
-            fruit6.setPoint(fpos[6].x + move_random, fpos[6].y);
-        }
-        if (!fruit_distroy[7]) {
-            move_random = move_ran(move);
-            fruit7.setPoint(fpos[7].x + move_random, fpos[7].y + move_random);
-        }
+        fruit0.setPoint(fpos[0].x, fpos[0].y + move_random);
+        fruit1.setPoint(fpos[1].x - move_random, fpos[1].y + move_random);
+        fruit2.setPoint(fpos[2].x - move_random, fpos[2].y);
+        fruit3.setPoint(fpos[3].x - move_random, fpos[3].y - move_random);
+        fruit4.setPoint(fpos[4].x, fpos[4].y - move_random);
+        fruit5.setPoint(fpos[5].x + move_random, fpos[5].y - move_random);
+        fruit6.setPoint(fpos[6].x + move_random, fpos[6].y);
+        fruit7.setPoint(fpos[7].x + move_random, fpos[7].y + move_random);
 
         //과일에 맞는 키보드 감지
         show_random = show_ran(show);
-        if (Keyboard::isKeyPressed(Keyboard::Numpad8)) {
+        boolean test = true;
+        if (Keyboard::isKeyPressed(Keyboard::Numpad8) && test) {
             !fruit_distroy[0];
             fruit0.setPoint(win_width / 2, -show_random);
+            score += 5;
+            test = false;
             slash = true;
         }
+        //}else if(Event.type == sf::Event::KeyReleased)
         if (Keyboard::isKeyPressed(Keyboard::Numpad9)) {
             !fruit_distroy[1];
             fruit1.setPoint(win_width + show_random, -show_random);
+            score += 5;
             slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Numpad6)) {
             !fruit_distroy[2];
             fruit2.setPoint(win_width + show_random, win_height / 2);
+            score += 5;
             slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Numpad3)) {
             !fruit_distroy[3];
             fruit3.setPoint(win_width + show_random, win_height + show_random);
+            score += 5;
             slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Numpad2)) {
             !fruit_distroy[4];
             fruit4.setPoint(win_width / 2, win_height + show_random);
+            score += 5;
             slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Numpad1)) {
             !fruit_distroy[5];
             fruit5.setPoint(-show_random, win_height + show_random);
+            score += 5;
             slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Numpad4)) {
             !fruit_distroy[6];
             fruit6.setPoint(-show_random, win_height / 2);
+            score += 5;
             slash = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Numpad7)) {
             !fruit_distroy[7];
             fruit7.setPoint(-show_random, -show_random);
+            score += 5;
             slash = true;
         }
 
         deltaTime += clock.restart().asSeconds();
         if (slash) {
+            cout << "임시 점수 시스템 : " << score << endl;
             if (deltaTime >= frameTime) {
                 currentFrame = (currentFrame+1);
                 sliceSprite.setTextureRect(sf::IntRect(currentFrame * 256, 0, 256, 256));
