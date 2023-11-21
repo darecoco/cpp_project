@@ -29,6 +29,20 @@ public:
         fruit_.setPosition(x, y);
     }
 
+    boolean fruitInFrame(int num) {
+        switch (num) {
+        case 0: if (fruit_.getPosition().y >= 0) return true; break;
+        case 1: if (fruit_.getPosition().y >= 0) return true; break;
+        case 2: if (fruit_.getPosition().x <= win_width) return true; break;
+        case 3: if (fruit_.getPosition().y <= win_height) return true; break;
+        case 4: if (fruit_.getPosition().y <= win_height) return true; break;
+        case 5: if (fruit_.getPosition().y <= win_height) return true; break;
+        case 6: if (fruit_.getPosition().x >= 0) return true; break;
+        case 7: if (fruit_.getPosition().y >= 0) return true; break;
+        }
+        return false;
+    }
+
 private:
     Sprite fruit_;
     Texture texture_;
@@ -56,6 +70,15 @@ int main() {
         return 1;
     }
     Vector2u textureSize = fruit.getSize();
+
+    Text text;
+    Font font; 
+    if (!font.loadFromFile("C:\\Users\\도토리\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NeoDunggeunmoPro-Regular.ttf")) {
+        return EXIT_FAILURE;
+    }
+    text.setFont(font);
+    text.setCharacterSize(24);
+    text.setPosition(0, 0);
 
     random_device sr; //show random
     mt19937 show(sr());
@@ -85,7 +108,7 @@ int main() {
     float deltaTime = 0.0f;
     int currentFrame = 0;
     bool slash = 0;
-    bool fruit_distroy[] = { false, false, false, false, false, false, false, false };
+    bool fruit_distroy[] = { true, true, true, true, true, true, true, true };
     // TODO : 점수 만들기 (최고기록은 프로그램 꺼져도 유지, 화면상 안나온 과일 칼질하면 그대로 게임 끝. 물론 과일이 화면을 넘어가도 게임 끝. 그대로 점수 보여주는 결과화면 띄우기)
     // 쥔공(중심)을 지나치기 전이면 5점, 지나친 후에 칼질하면 1점
 
@@ -103,6 +126,7 @@ int main() {
                 window.close();
         }
         Vector2f fpos[] = { fruit0.getPoint(), fruit1.getPoint(), fruit2.getPoint(), fruit3.getPoint(), fruit4.getPoint(), fruit5.getPoint(),fruit6.getPoint(), fruit7.getPoint() };
+        text.setString(L"점수 : " + to_string(score));
 
         //과일 파괴 안되었으면 각자의 방향으로 계속 나아감.
         //  7  0  1
@@ -120,57 +144,63 @@ int main() {
 
         //과일에 맞는 키보드 감지
         show_random = show_ran(show);
-        boolean test = true;
-        if (Keyboard::isKeyPressed(Keyboard::Numpad8) && test) {
-            !fruit_distroy[0];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad8) && fruit_distroy[0]) {
+            fruit_distroy[0] = false;
             fruit0.setPoint(win_width / 2, -show_random);
             score += 5;
-            test = false;
             slash = true;
         }
-        //}else if(Event.type == sf::Event::KeyReleased)
-        if (Keyboard::isKeyPressed(Keyboard::Numpad9)) {
-            !fruit_distroy[1];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad9) && fruit_distroy[1]) {
+            fruit_distroy[1] = false;
             fruit1.setPoint(win_width + show_random, -show_random);
             score += 5;
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Numpad6)) {
-            !fruit_distroy[2];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad6) && fruit_distroy[2]) {
+            fruit_distroy[2] = false;
             fruit2.setPoint(win_width + show_random, win_height / 2);
             score += 5;
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Numpad3)) {
-            !fruit_distroy[3];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad3) && fruit_distroy[3]) {
+            fruit_distroy[3] = false;
             fruit3.setPoint(win_width + show_random, win_height + show_random);
             score += 5;
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Numpad2)) {
-            !fruit_distroy[4];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad2) && fruit_distroy[4]) {
+            fruit_distroy[4] = false;
             fruit4.setPoint(win_width / 2, win_height + show_random);
             score += 5;
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Numpad1)) {
-            !fruit_distroy[5];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad1) && fruit_distroy[5]) {
+            fruit_distroy[5] = false;
             fruit5.setPoint(-show_random, win_height + show_random);
             score += 5;
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Numpad4)) {
-            !fruit_distroy[6];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad4) && fruit_distroy[6]) {
+            fruit_distroy[6] = false;
             fruit6.setPoint(-show_random, win_height / 2);
             score += 5;
             slash = true;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Numpad7)) {
-            !fruit_distroy[7];
+        if (Keyboard::isKeyPressed(Keyboard::Numpad7) && fruit_distroy[7]) {
+            fruit_distroy[7] = false;
             fruit7.setPoint(-show_random, -show_random);
             score += 5;
             slash = true;
         }
+
+        fruit_distroy[0] = fruit0.fruitInFrame(0);
+        fruit_distroy[1] = fruit1.fruitInFrame(1);
+        fruit_distroy[2] = fruit2.fruitInFrame(2);
+        fruit_distroy[3] = fruit3.fruitInFrame(3);
+        fruit_distroy[4] = fruit4.fruitInFrame(4);
+        fruit_distroy[5] = fruit5.fruitInFrame(5);
+        fruit_distroy[6] = fruit6.fruitInFrame(6);
+        fruit_distroy[7] = fruit7.fruitInFrame(7);
 
         deltaTime += clock.restart().asSeconds();
         if (slash) {
@@ -201,6 +231,7 @@ int main() {
         window.draw(fruit5.getSprite());
         window.draw(fruit6.getSprite());
         window.draw(fruit7.getSprite());
+        window.draw(text);
 
         window.display();
     }
