@@ -55,6 +55,7 @@ int main() {
 
     window.setFramerateLimit(fps);
 
+    //텍스쳐 불러오기
     Texture sliceSheet;
     if (!sliceSheet.loadFromFile("./images/slice_sheet.png")) {
         return 1;
@@ -69,8 +70,11 @@ int main() {
     if (!fruit.loadFromFile("./images/melon.png")) {
         return 1;
     }
+
+    //텍스쳐 사이즈 조정
     Vector2u textureSize = fruit.getSize();
 
+    //점수용 폰트 불러오기
     Text text;
     Font font; 
     if (!font.loadFromFile("C:\\Users\\도토리\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NeoDunggeunmoPro-Regular.ttf")) {
@@ -79,10 +83,16 @@ int main() {
     text.setFont(font);
     text.setPosition(0, 0);
 
+    //랜덤 초기화
     random_device sr; //show random
     mt19937 show(sr());
     uniform_int_distribution<int> show_ran(textureSize.x / 2 + 20, textureSize.x * 3);
 
+    random_device mr; //move random
+    mt19937 move(mr());
+    uniform_int_distribution<int> move_ran(5, 10);
+
+    //스프라이트 불러오기
     Sprite sliceSprite;
     sliceSprite.setTexture(sliceSheet);
     sliceSprite.setTextureRect(IntRect(0, 0, 256, 256));
@@ -93,6 +103,7 @@ int main() {
     baseSprite.setTextureRect(IntRect(0, 0, 256, 256));
     baseSprite.setPosition(win_width / 2 - 256 / 2, win_height / 2 - 256 / 2);
 
+    //과일 0~9 초기화
     Fruit fruit0 = Fruit(fruit, win_width / 2, -70);
     Fruit fruit1 = Fruit(fruit, win_width + 90, -90);
     Fruit fruit2 = Fruit(fruit, win_width + 110, win_height / 2);
@@ -102,21 +113,17 @@ int main() {
     Fruit fruit6 = Fruit(fruit, -190, win_height / 2);
     Fruit fruit7 = Fruit(fruit, -210, -210);
 
+    //초시계관련 초기화
     Clock clock;
     float frameTime = 0.15f;
     float deltaTime = 0.0f;
     int currentFrame = 0;
-    bool slash = 0;
-    bool fruit_distroy[] = { true, true, true, true, true, true, true, true };
-    // TODO : 점수 만들기 (최고기록은 프로그램 꺼져도 유지, 화면상 안나온 과일 칼질하면 그대로 게임 끝. 물론 과일이 화면을 넘어가도 게임 끝. 그대로 점수 보여주는 결과화면 띄우기)
-    // 쥔공(중심)을 지나치기 전이면 5점, 지나친 후에 칼질하면 1점
 
-    random_device mr; //move random
-    mt19937 move(mr());
-    uniform_int_distribution<int> move_ran(5, 10);
-
+    //각종 변수 초기화
     unsigned int score = 0;
     int move_random, show_random;
+    bool slash = 0;
+    bool fruit_distroy[] = { true, true, true, true, true, true, true, true };
 
     while (window.isOpen()) {
         Event e;
@@ -193,6 +200,7 @@ int main() {
             slash = true;
         }
 
+        //과일이 프레임 안에 있는가 -> 파괴 가능
         fruit_distroy[0] = fruit0.fruitInFrame(0);
         fruit_distroy[1] = fruit1.fruitInFrame(1);
         fruit_distroy[2] = fruit2.fruitInFrame(2);
@@ -203,6 +211,8 @@ int main() {
         fruit_distroy[7] = fruit7.fruitInFrame(7);
 
         deltaTime += clock.restart().asSeconds();
+
+        //쥔공 칼질 모션
         if (slash) {
             //cout << "임시 점수 시스템 : " << score << endl;
             if (deltaTime >= frameTime) {
@@ -223,6 +233,7 @@ int main() {
             window.draw(baseSprite);
         }
 
+        //과일과 점수 그리기
         window.draw(fruit0.getSprite());
         window.draw(fruit1.getSprite());
         window.draw(fruit2.getSprite());
