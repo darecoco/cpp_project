@@ -237,7 +237,6 @@ int main() {
                 window.clear();
                 window.draw(sliceSprite);
                 if (currentFrame == 2) {
-                    cout << "ÀÛµ¿ µÊ" << endl;
                     slash = false;
                     continue;
                 }
