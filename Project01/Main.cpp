@@ -77,7 +77,6 @@ int main() {
         return EXIT_FAILURE;
     }
     text.setFont(font);
-    text.setCharacterSize(24);
     text.setPosition(0, 0);
 
     random_device sr; //show random
@@ -127,6 +126,7 @@ int main() {
         }
         Vector2f fpos[] = { fruit0.getPoint(), fruit1.getPoint(), fruit2.getPoint(), fruit3.getPoint(), fruit4.getPoint(), fruit5.getPoint(),fruit6.getPoint(), fruit7.getPoint() };
         text.setString(L"점수 : " + to_string(score));
+        text.setCharacterSize(score/5);
 
         //과일 파괴 안되었으면 각자의 방향으로 계속 나아감.
         //  7  0  1
@@ -204,7 +204,7 @@ int main() {
 
         deltaTime += clock.restart().asSeconds();
         if (slash) {
-            cout << "임시 점수 시스템 : " << score << endl;
+            //cout << "임시 점수 시스템 : " << score << endl;
             if (deltaTime >= frameTime) {
                 currentFrame = (currentFrame+1);
                 sliceSprite.setTextureRect(sf::IntRect(currentFrame * 256, 0, 256, 256));
