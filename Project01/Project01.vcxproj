@@ -154,12 +154,6 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="WindowSetting.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\Users\도토리\OneDrive\바탕 화면\잠시 도랏을때\spritesheet.png">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </DeploymentContent>
-    </Image>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

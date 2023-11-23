@@ -36,9 +36,4 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\Users\도토리\OneDrive\바탕 화면\잠시 도랏을때\spritesheet.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
-  </ItemGroup>
 </Project>

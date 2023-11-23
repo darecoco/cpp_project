@@ -43,11 +43,54 @@ public:
         return false;
     }
 
+    boolean fruitOverFrame(int num) {
+        switch (num) {
+        case 0: if (fruit_.getPosition().y <= 0) return true; break;
+        case 1: if (fruit_.getPosition().y <= 0) return true; break;
+        case 2: if (fruit_.getPosition().x >= win_width) return true; break;
+        case 3: if (fruit_.getPosition().y >= win_height) return true; break;
+        case 4: if (fruit_.getPosition().y >= win_height) return true; break;
+        case 5: if (fruit_.getPosition().y >= win_height) return true; break;
+        case 6: if (fruit_.getPosition().x <= 0) return true; break;
+        case 7: if (fruit_.getPosition().y <= 0) return true; break;
+        }
+        return false;
+    }
+
 private:
     Sprite fruit_;
     Texture texture_;
     float point_x_;
     float point_y_;
+};
+
+class Texts {
+public:
+    Texts(int x, int y) : x_(x), y_(y) {
+        if (!font_.loadFromFile("./fonts/NeoDunggeunmoPro-Regular.ttf")) {
+            exit;
+        }
+        text_.setFont(font_);
+        text_.setPosition(x, y);
+    }
+
+    Text getText() {
+        return text_;
+    }
+
+    void setText(wstring s) {
+        text_.setString(s);
+    }
+
+    void setSize(int size) {
+        text_.setCharacterSize(size);
+    }
+
+private:
+    Font font_;
+    Text text_;
+    int x_;
+    int y_;
 };
 
 int main() {
@@ -71,17 +114,48 @@ int main() {
         return 1;
     }
 
+    Texture title;
+    if (!title.loadFromFile("./images/title.png")) {
+        return 1;
+    }
+
+    Texture discription1, discription2;
+    if (!discription1.loadFromFile("./images/discription1.png")) {
+        return 1;
+    }
+    if (!discription2.loadFromFile("./images/discription2.png")) {
+        return 1;
+    }
+
+
     //텍스쳐 사이즈 조정
     Vector2u textureSize = fruit.getSize();
 
-    //점수용 폰트 불러오기
-    Text text;
-    Font font; 
-    if (!font.loadFromFile("./fonts/NeoDunggeunmoPro-Regular.ttf")) {
-        return EXIT_FAILURE;
-    }
-    text.setFont(font);
-    text.setPosition(0, 0);
+    //텍스트들 초기화
+    Texts scoreText(0, 0);
+
+    Texts gameStartText(550, 570);
+    gameStartText.setText(L"[S] 게임 시작");
+    gameStartText.setSize(30);
+
+    Texts gameRule(550, 650);
+    gameRule.setText(L"[R] 게임 방법");
+    gameRule.setSize(30);
+
+    Texts gameExitText(550, 730);
+    gameExitText.setText(L"[X] 게임 나가기");
+    gameExitText.setSize(30);
+
+    //게임 설명 글
+    wstring rule[] = {
+        L"검객시험은 사방에서 날아오는 과일들을\n최대한 많이 쳐 내는 방식으로 진행됩니다.",
+        L"Numpad의 숫자키로만 과일들을 쳐낼 수 있습니다.\n과일이 화면을 넘어가거나\n과일이 없는 곳에 칼질하면 게임오버!"
+    };
+    Texts discriptionText(80, 610);
+    discriptionText.setText(rule[0]);
+
+    Texts arrowText(60, 740);
+    arrowText.setText(L"[◀] 이전 페이지\t[B] 돌아가기\t[▶] 다음 페이지");
 
     //랜덤 초기화
     random_device sr; //show random
@@ -103,6 +177,14 @@ int main() {
     baseSprite.setTextureRect(IntRect(0, 0, 256, 256));
     baseSprite.setPosition(win_width / 2 - 256 / 2, win_height / 2 - 256 / 2);
 
+    Sprite startScreen;
+    startScreen.setTexture(title);
+    startScreen.setPosition(0, 0);
+
+    Sprite discription;
+    discription.setTexture(discription1);
+    discription.setPosition(150, 100);
+
     //과일 0~9 초기화
     Fruit fruit0 = Fruit(fruit, win_width / 2, -70);
     Fruit fruit1 = Fruit(fruit, win_width + 90, -90);
@@ -115,7 +197,7 @@ int main() {
 
     //초시계관련 초기화
     Clock clock;
-    float frameTime = 0.15f;
+    float frameTime = 0.1f;
     float deltaTime = 0.0f;
     int currentFrame = 0;
 
@@ -124,12 +206,62 @@ int main() {
     int move_random, show_random;
     bool slash = 0;
     bool fruit_distroy[] = { true, true, true, true, true, true, true, true };
+    bool gameOver, titleScreen = true;
 
     while (window.isOpen()) {
         Event e;
         while (window.pollEvent(e)) {
             if (e.type == Event::Closed)
                 window.close();
+        }
+        
+        //시작 화면
+        while (titleScreen && window.isOpen()) {
+            Event e;
+            while (window.pollEvent(e)) {
+                if (e.type == Event::Closed)
+                    window.close();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::S)) {
+                titleScreen = false;
+            }
+            if (Keyboard::isKeyPressed(Keyboard::R)) {
+                //게임 방법 창
+                while (window.isOpen()) {
+                    Event e;
+                    while (window.pollEvent(e)) {
+                        if (e.type == Event::Closed)
+                            window.close();
+                    }
+                    if (Keyboard::isKeyPressed(Keyboard::Right)) {
+                        discription.setTexture(discription2);
+                        discriptionText.setText(rule[1]);
+                    }
+                    if (Keyboard::isKeyPressed(Keyboard::B)) {
+                        break;
+                    }
+                    if (Keyboard::isKeyPressed(Keyboard::Left)) {
+                        discription.setTexture(discription1);
+                        discriptionText.setText(rule[0]);
+                    }
+
+                    window.clear();
+                    window.draw(discription);
+                    window.draw(discriptionText.getText());
+                    window.draw(arrowText.getText());
+
+                    window.display();
+                }
+            }
+            if (Keyboard::isKeyPressed(Keyboard::X)) {
+                return 0;
+            }
+            window.draw(startScreen);
+            window.draw(gameStartText.getText());
+            window.draw(gameRule.getText());
+            window.draw(gameExitText.getText());
+
+            window.display();
         }
 
         while (window.isOpen()) {
@@ -139,8 +271,8 @@ int main() {
                     window.close();
             }
             Vector2f fpos[] = { fruit0.getPoint(), fruit1.getPoint(), fruit2.getPoint(), fruit3.getPoint(), fruit4.getPoint(), fruit5.getPoint(),fruit6.getPoint(), fruit7.getPoint() };
-            text.setString(L"점수 : " + to_string(score));
-            text.setCharacterSize(score/5);
+            scoreText.setText(L"점수 : " + to_string(score));
+            scoreText.setSize(score/5);
 
             //과일 파괴 안되었으면 각자의 방향으로 계속 나아감.
             //  7  0  1
@@ -256,9 +388,12 @@ int main() {
             window.draw(fruit5.getSprite());
             window.draw(fruit6.getSprite());
             window.draw(fruit7.getSprite());
-            window.draw(text);
+            window.draw(scoreText.getText());
             window.display();
         }
 
+        while (true) {
+            //TODO: 게임 오버 화면 만들기
+        }
     }
 }
