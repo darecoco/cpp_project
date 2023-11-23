@@ -98,7 +98,7 @@ private:
 };
 
 int main() {
-    RenderWindow window(VideoMode(win_width, win_height), "A big challenge for programmers is naming.");
+    RenderWindow window(VideoMode(win_width, win_height), L"검객시험");
 
     window.setFramerateLimit(fps);
     window.setKeyRepeatEnabled(false);
@@ -297,10 +297,6 @@ int main() {
 
         while (window.isOpen()) {
             Event e;
-            while (window.pollEvent(e)) {
-                if (e.type == Event::Closed)
-                    window.close();
-            }
             Vector2f fpos[] = { fruit0.getPoint(), fruit1.getPoint(), fruit2.getPoint(), fruit3.getPoint(), fruit4.getPoint(), fruit5.getPoint(),fruit6.getPoint(), fruit7.getPoint() };
             scoreText.setText(L"점수 : " + to_string(score));
             scoreText.setSize(score/5);
@@ -321,61 +317,66 @@ int main() {
 
             //과일에 맞는 키보드 감지
             show_random = show_ran(show);
-            if (Keyboard::isKeyPressed(Keyboard::Numpad8) && fruit_distroy[0]) {
-                fruit_distroy[0] = false;
-                fruit0.setPoint(win_width / 2, -show_random);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad9) && fruit_distroy[1]) {
-                fruit_distroy[1] = false;
-                fruit1.setPoint(win_width + show_random, -show_random);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad6) && fruit_distroy[2]) {
-                fruit_distroy[2] = false;
-                fruit2.setPoint(win_width + show_random, win_height / 2);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad3) && fruit_distroy[3]) {
-                fruit_distroy[3] = false;
-                fruit3.setPoint(win_width + show_random, win_height + show_random);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad2) && fruit_distroy[4]) {
-                fruit_distroy[4] = false;
-                fruit4.setPoint(win_width / 2, win_height + show_random);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad1) && fruit_distroy[5]) {
-                fruit_distroy[5] = false;
-                fruit5.setPoint(-show_random, win_height + show_random);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad4) && fruit_distroy[6]) {
-                fruit_distroy[6] = false;
-                fruit6.setPoint(-show_random, win_height / 2);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::Numpad7) && fruit_distroy[7]) {
-                fruit_distroy[7] = false;
-                fruit7.setPoint(-show_random, -show_random);
-                score += 5;
-                slash = true;
-                currentFrame = 0;
+            while (window.pollEvent(e)) {
+                if (e.type == Event::Closed)
+                    window.close();
+                //키 여러번 입력을 방지
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad8) && fruit_distroy[0]) {
+                    fruit_distroy[0] = false;
+                    fruit0.setPoint(win_width / 2, -show_random);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad9) && fruit_distroy[1]) {
+                    fruit_distroy[1] = false;
+                    fruit1.setPoint(win_width + show_random, -show_random);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad6) && fruit_distroy[2]) {
+                    fruit_distroy[2] = false;
+                    fruit2.setPoint(win_width + show_random, win_height / 2);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad3) && fruit_distroy[3]) {
+                    fruit_distroy[3] = false;
+                    fruit3.setPoint(win_width + show_random, win_height + show_random);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad2) && fruit_distroy[4]) {
+                    fruit_distroy[4] = false;
+                    fruit4.setPoint(win_width / 2, win_height + show_random);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad1) && fruit_distroy[5]) {
+                    fruit_distroy[5] = false;
+                    fruit5.setPoint(-show_random, win_height + show_random);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad4) && fruit_distroy[6]) {
+                    fruit_distroy[6] = false;
+                    fruit6.setPoint(-show_random, win_height / 2);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
+                else if (Keyboard::isKeyPressed(Keyboard::Numpad7) && fruit_distroy[7]) {
+                    fruit_distroy[7] = false;
+                    fruit7.setPoint(-show_random, -show_random);
+                    score += 5;
+                    slash = true;
+                    currentFrame = 0;
+                }
             }
 
             //과일이 프레임 안에 있는가 -> 파괴 가능
