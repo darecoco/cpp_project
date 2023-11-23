@@ -8,6 +8,10 @@
 using namespace std;
 using namespace sf;
 
+const int win_width = 800;
+const int win_height = 800;
+const int fps = 30;
+
 class Fruit {
 public:
     Fruit(Texture texture, float point_x, float point_y) : texture_(texture), point_x_(point_x), point_y_(point_y)
@@ -54,7 +58,6 @@ public:
         case 6: if (fruit_.getPosition().x <= 0) return true; break;
         case 7: if (fruit_.getPosition().y <= 0) return true; break;
         }
-        return false;
     }
 
 private:
@@ -97,6 +100,7 @@ int main() {
     RenderWindow window(VideoMode(win_width, win_height), "A big challenge for programmers is naming.");
 
     window.setFramerateLimit(fps);
+    window.setKeyRepeatEnabled(false);
 
     //텍스쳐 불러오기
     Texture sliceSheet;
@@ -119,14 +123,21 @@ int main() {
         return 1;
     }
 
-    Texture discription1, discription2;
+    Texture discription1, discription2, discription3;
     if (!discription1.loadFromFile("./images/discription1.png")) {
         return 1;
     }
     if (!discription2.loadFromFile("./images/discription2.png")) {
         return 1;
     }
-
+    if (!discription3.loadFromFile("./images/discription2.png")) {
+        return 1;
+    }
+    Texture ruleImage[] = {
+        discription1,
+        discription2,
+        discription3
+    };
 
     //텍스쳐 사이즈 조정
     Vector2u textureSize = fruit.getSize();
@@ -149,7 +160,8 @@ int main() {
     //게임 설명 글
     wstring rule[] = {
         L"검객시험은 사방에서 날아오는 과일들을\n최대한 많이 쳐 내는 방식으로 진행됩니다.",
-        L"Numpad의 숫자키로만 과일들을 쳐낼 수 있습니다.\n과일이 화면을 넘어가거나\n과일이 없는 곳에 칼질하면 게임오버!"
+        L"Numpad의 숫자키로만 과일들을 쳐낼 수 있습니다.\n과일이 화면을 넘어가거나\n과일이 없는 곳에 칼질하면 게임오버!",
+        L"점수가 커지고, 칼질하면 과일들이 잠시 빨라지는 등\n거슬리는 방해를 참아가며 시험을 치뤄보세요."
     };
     Texts discriptionText(80, 610);
     discriptionText.setText(rule[0]);
@@ -206,7 +218,7 @@ int main() {
     int move_random, show_random;
     bool slash = 0;
     bool fruit_distroy[] = { true, true, true, true, true, true, true, true };
-    bool gameOver, titleScreen = true;
+    bool gameOver=false, titleScreen = true;
 
     while (window.isOpen()) {
         Event e;
@@ -227,30 +239,31 @@ int main() {
             }
             if (Keyboard::isKeyPressed(Keyboard::R)) {
                 //게임 방법 창
+                 int ruleNum = 0;
                 while (window.isOpen()) {
                     Event e;
                     while (window.pollEvent(e)) {
                         if (e.type == Event::Closed)
                             window.close();
-                    }
-                    if (Keyboard::isKeyPressed(Keyboard::Right)) {
-                        discription.setTexture(discription2);
-                        discriptionText.setText(rule[1]);
+                        else if (Keyboard::isKeyPressed(Keyboard::Right)) {
+                            if (++ruleNum > 2) ruleNum = 2;
+                            cout << ruleNum << endl;
+                            discription.setTexture(ruleImage[ruleNum]);
+                            discriptionText.setText(rule[ruleNum]);
+                        }else if (Keyboard::isKeyPressed(Keyboard::Left)) {
+                            if (--ruleNum < 0) ruleNum = 0;
+                            discription.setTexture(ruleImage[ruleNum]);
+                            discriptionText.setText(rule[ruleNum]);
+                        }
+                        window.clear();
+                        window.draw(discription);
+                        window.draw(discriptionText.getText());
+                        window.draw(arrowText.getText());
+                        window.display();
                     }
                     if (Keyboard::isKeyPressed(Keyboard::B)) {
                         break;
                     }
-                    if (Keyboard::isKeyPressed(Keyboard::Left)) {
-                        discription.setTexture(discription1);
-                        discriptionText.setText(rule[0]);
-                    }
-
-                    window.clear();
-                    window.draw(discription);
-                    window.draw(discriptionText.getText());
-                    window.draw(arrowText.getText());
-
-                    window.display();
                 }
             }
             if (Keyboard::isKeyPressed(Keyboard::X)) {
