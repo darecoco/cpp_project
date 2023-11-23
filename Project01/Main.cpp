@@ -124,6 +124,11 @@ int main() {
         return 1;
     }
 
+    Texture end;
+    if (!end.loadFromFile("./images/gameOver.png")) {
+        return 1;
+    }
+
     Texture discription1, discription2, discription3;
     if (!discription1.loadFromFile("./images/discription1.png")) {
         return 1;
@@ -157,6 +162,13 @@ int main() {
     Texts gameExitText(550, 730);
     gameExitText.setText(L"[X] 게임 나가기");
     gameExitText.setSize(30);
+
+    Texts retry(550, 650);
+    retry.setText(L"[M] 메인 화면");
+    retry.setSize(30);
+
+    Texts finalScore(110, 80);
+    finalScore.setSize(50);
 
     //게임 설명 글
     wstring rule[] = {
@@ -197,6 +209,10 @@ int main() {
     Sprite discription;
     discription.setTexture(discription1);
     discription.setPosition(150, 100);
+
+    Sprite endScreen;
+    endScreen.setTexture(end);
+    endScreen.setPosition(0, 0);
 
     //과일 0~9 초기화
     Fruit fruit0 = Fruit(fruit, win_width / 2, -70);
@@ -381,7 +397,10 @@ int main() {
             gameOver = fruit6.fruitOverFrame(6);
             gameOver = fruit7.fruitOverFrame(7);
 
-            if (gameOver) break;
+            if (gameOver) {
+                finalScore.setText(L"시험종료!\n당신의 점수는...\n" + to_string(score) + L"점 입니다. \n수고하셨습니다.");
+                break;
+            }
 
             deltaTime += clock.restart().asSeconds();
 
@@ -424,15 +443,21 @@ int main() {
             while (window.pollEvent(e)) {
                 if (e.type == Event::Closed)
                     window.close();
+                else if (Keyboard::isKeyPressed(Keyboard::M)) {
+                    cout << "실행됨" << endl;
+                    titleScreen = true;
+                    gameOver = false;
+                    break;
+                }
             }
-            if (Keyboard::isKeyPressed(Keyboard::Space)) {
-                break;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::BackSpace)) {
+            if (Keyboard::isKeyPressed(Keyboard::X)) {
                 return 0;
             }
-            window.draw(startScreen);
 
+            window.draw(endScreen);
+            window.draw(gameExitText.getText());
+            window.draw(retry.getText());
+            window.draw(finalScore.getText());
             window.display();
         }
     }
