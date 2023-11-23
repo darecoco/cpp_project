@@ -35,29 +35,30 @@ public:
 
     boolean fruitInFrame(int num) {
         switch (num) {
-        case 0: if (fruit_.getPosition().y >= 0) return true; break;
+        case 0: if (fruit_.getPosition().y >= 0)  return true; break;
         case 1: if (fruit_.getPosition().y >= 0) return true; break;
-        case 2: if (fruit_.getPosition().x <= win_width) return true; break;
+        case 2: if (fruit_.getPosition().x <= win_width)  return true; break;
         case 3: if (fruit_.getPosition().y <= win_height) return true; break;
         case 4: if (fruit_.getPosition().y <= win_height) return true; break;
         case 5: if (fruit_.getPosition().y <= win_height) return true; break;
         case 6: if (fruit_.getPosition().x >= 0) return true; break;
-        case 7: if (fruit_.getPosition().y >= 0) return true; break;
+        case 7: if (fruit_.getPosition().y >= 0)  return true; break;
         }
         return false;
     }
 
     boolean fruitOverFrame(int num) {
         switch (num) {
-        case 0: if (fruit_.getPosition().y <= 0) return true; break;
-        case 1: if (fruit_.getPosition().y <= 0) return true; break;
-        case 2: if (fruit_.getPosition().x >= win_width) return true; break;
-        case 3: if (fruit_.getPosition().y >= win_height) return true; break;
-        case 4: if (fruit_.getPosition().y >= win_height) return true; break;
-        case 5: if (fruit_.getPosition().y >= win_height) return true; break;
-        case 6: if (fruit_.getPosition().x <= 0) return true; break;
-        case 7: if (fruit_.getPosition().y <= 0) return true; break;
+        case 0: if (fruit_.getPosition().y >= win_height) return true; break;
+        case 1: if (fruit_.getPosition().y >= win_height) return true; break;
+        case 2: if (fruit_.getPosition().x <= 0) return true; break;
+        case 3: if (fruit_.getPosition().y <= 0) return true; break;
+        case 4: if (fruit_.getPosition().y <= 0) return true; break;
+        case 5: if (fruit_.getPosition().y <= 0) return true; break;
+        case 6: if (fruit_.getPosition().x >= win_width) return true; break;
+        case 7: if (fruit_.getPosition().y >= win_height) return true; break;
         }
+        return false;
     }
 
 private:
@@ -218,7 +219,8 @@ int main() {
     int move_random, show_random;
     bool slash = 0;
     bool fruit_distroy[] = { true, true, true, true, true, true, true, true };
-    bool gameOver=false, titleScreen = true;
+    bool gameOver = false;
+    bool titleScreen = true;
 
     while (window.isOpen()) {
         Event e;
@@ -370,6 +372,17 @@ int main() {
             fruit_distroy[6] = fruit6.fruitInFrame(6);
             fruit_distroy[7] = fruit7.fruitInFrame(7);
 
+            //과일이 프레임을 넘어갔는가 -> 게임 오버
+            gameOver = fruit0.fruitOverFrame(0);
+            gameOver = fruit2.fruitOverFrame(2);
+            gameOver = fruit3.fruitOverFrame(3);
+            gameOver = fruit4.fruitOverFrame(4);
+            gameOver = fruit5.fruitOverFrame(5);
+            gameOver = fruit6.fruitOverFrame(6);
+            gameOver = fruit7.fruitOverFrame(7);
+
+            if (gameOver) break;
+
             deltaTime += clock.restart().asSeconds();
 
             //쥔공 칼질 모션
@@ -403,10 +416,24 @@ int main() {
             window.draw(fruit7.getSprite());
             window.draw(scoreText.getText());
             window.display();
+
         }
 
-        while (true) {
-            //TODO: 게임 오버 화면 만들기
+        while (gameOver) {
+            Event e;
+            while (window.pollEvent(e)) {
+                if (e.type == Event::Closed)
+                    window.close();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Space)) {
+                break;
+            }
+            if (Keyboard::isKeyPressed(Keyboard::BackSpace)) {
+                return 0;
+            }
+            window.draw(startScreen);
+
+            window.display();
         }
     }
 }
